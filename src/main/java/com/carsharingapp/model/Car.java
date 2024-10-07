@@ -28,7 +28,7 @@ public class Car {
     private String model;
     @Column(nullable = false)
     private String brand;
-    @Column(name = "body_type", nullable = false, unique = true)
+    @Column(name = "body_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private CarBodyType carBodyType;
     @Column(nullable = false)
@@ -42,6 +42,9 @@ public class Car {
         SEDAN,
         SUV,
         HATCHBACK,
-        UNIVERSAL
+        UNIVERSAL,
+        COUPE,
+        CROSSOVER,
+        MINIVAN
     }
 }

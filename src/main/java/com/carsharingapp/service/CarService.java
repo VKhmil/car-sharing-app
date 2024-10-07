@@ -2,8 +2,8 @@ package com.carsharingapp.service;
 
 import com.carsharingapp.dto.car.CarResponseDto;
 import com.carsharingapp.dto.car.RequestCarDto;
-import java.awt.print.Pageable;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 public interface CarService {
 

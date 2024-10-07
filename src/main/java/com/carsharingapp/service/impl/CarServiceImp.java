@@ -7,10 +7,10 @@ import com.carsharingapp.mapper.CarMapper;
 import com.carsharingapp.model.Car;
 import com.carsharingapp.repository.CarRepository;
 import com.carsharingapp.service.CarService;
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
