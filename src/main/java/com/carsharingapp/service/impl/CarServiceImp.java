@@ -1,16 +1,19 @@
 package com.carsharingapp.service.impl;
 
+import com.carsharingapp.dto.car.CarFilterDto;
 import com.carsharingapp.dto.car.CarResponseDto;
 import com.carsharingapp.dto.car.RequestCarDto;
 import com.carsharingapp.exception.EntityNotFoundException;
 import com.carsharingapp.mapper.CarMapper;
 import com.carsharingapp.model.Car;
 import com.carsharingapp.repository.CarRepository;
+import com.carsharingapp.repository.spec.CarSpecificationBuilder;
 import com.carsharingapp.service.CarService;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CarServiceImp implements CarService {
     private final CarRepository carRepository;
     private final CarMapper carMapper;
+    private final CarSpecificationBuilder carSpecificationBuilder;
 
     @Override
     public CarResponseDto findById(Long id) {
@@ -30,9 +34,16 @@ public class CarServiceImp implements CarService {
 
     @Override
     public List<CarResponseDto> findAllCars(Pageable pageable) {
-        return carRepository.findAll().stream()
+        return carRepository.findAll(pageable).stream()
                 .map(carMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CarResponseDto> search(CarFilterDto carFilterDto) {
+        Specification<Car> build = carSpecificationBuilder
+                .build(carFilterDto);
+        return carMapper.toDtoList(carRepository.findAll(build));
     }
 
     @Override

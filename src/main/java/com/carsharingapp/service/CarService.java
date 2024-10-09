@@ -1,5 +1,6 @@
 package com.carsharingapp.service;
 
+import com.carsharingapp.dto.car.CarFilterDto;
 import com.carsharingapp.dto.car.CarResponseDto;
 import com.carsharingapp.dto.car.RequestCarDto;
 import java.util.List;
@@ -10,6 +11,8 @@ public interface CarService {
     CarResponseDto findById(Long id);
 
     List<CarResponseDto> findAllCars(Pageable pageable);
+
+    List<CarResponseDto> search(CarFilterDto carFilterDto);
 
     CarResponseDto save(RequestCarDto requestCarDto);
 

@@ -1,5 +1,6 @@
 package com.carsharingapp.controller;
 
+import com.carsharingapp.dto.car.CarFilterDto;
 import com.carsharingapp.dto.car.CarResponseDto;
 import com.carsharingapp.dto.car.RequestCarDto;
 import com.carsharingapp.service.CarService;
@@ -29,9 +30,16 @@ public class CarController {
 
     @GetMapping
     @Operation(summary = "Find all cars",
-            description = "Find all cars, uses pagination")
+            description = "Find all cars, uses pagination and sorting")
     public List<CarResponseDto> getAllCars(Pageable pageable) {
         return carService.findAllCars(pageable);
+    }
+
+    @GetMapping("/search")
+    @Operation(summary = "Searching a cars by parameter",
+            description = "Searching a cars by parameter dynamically")
+    public List<CarResponseDto> search(CarFilterDto carFilterDto) {
+        return carService.search(carFilterDto);
     }
 
     @GetMapping("/{id}")
@@ -43,14 +51,16 @@ public class CarController {
 
     @PostMapping
     @Operation(summary = "Save car in DB",
-            description = "Save car in DB, return response DTO of saved car")
+            description = "Save car in DB, return response DTO of saved car "
+                    + "Checks if a field you entered is valid")
     public CarResponseDto saveCar(@RequestBody @Valid RequestCarDto requestCarDto) {
         return carService.save(requestCarDto);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update car",
-            description = "Update car and return response DTO of updated car")
+            description = "Update car and return response DTO of updated car "
+                   + "Checks if a field you entered is valid")
     public CarResponseDto updateCar(@PathVariable Long id, @Valid RequestCarDto requestCarDto) {
         return carService.update(id, requestCarDto);
     }
