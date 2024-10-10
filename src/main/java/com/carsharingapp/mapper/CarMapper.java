@@ -20,6 +20,8 @@ public interface CarMapper {
 
     List<CarResponseDto> toDtoList(List<Car> book);
 
+    List<Car> toModelList(List<RequestCarDto> requestCarDtos);
+
     void updateFromDto(RequestCarDto requestCarDto, @MappingTarget Car car);
 
     default Page<CarResponseDto> toDtoPage(Page<Car> cars) {

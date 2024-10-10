@@ -50,11 +50,18 @@ public class CarController {
     }
 
     @PostMapping
-    @Operation(summary = "Save car in DB",
-            description = "Save car in DB, return response DTO of saved car "
-                    + "Checks if a field you entered is valid")
+    @Operation(summary = "Saves a list of cars in the database",
+            description = "Accepts a list of car data transfer objects (DTOs) "
+                    + "and saves each car to the database. Returns a list of saved car response "
+                    + "DTOs with their assigned IDs and other details.")
     public CarResponseDto saveCar(@RequestBody @Valid RequestCarDto requestCarDto) {
         return carService.save(requestCarDto);
+    }
+
+    @PostMapping("/save-multiple")
+    @Operation(summary = "Saves list of cars in DB")
+    public List<CarResponseDto> saveCars(@RequestBody @Valid List<RequestCarDto> cars) {
+        return carService.saveAll(cars);
     }
 
     @PutMapping("/{id}")

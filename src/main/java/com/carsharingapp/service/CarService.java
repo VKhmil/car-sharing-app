@@ -16,6 +16,8 @@ public interface CarService {
 
     CarResponseDto save(RequestCarDto requestCarDto);
 
+    List<CarResponseDto> saveAll(List<RequestCarDto> requestCarDtos);
+
     CarResponseDto update(Long id, RequestCarDto requestCarDto);
 
     void deleteById(Long id);

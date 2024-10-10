@@ -4,7 +4,6 @@ import com.carsharingapp.dto.car.CarFilterDto;
 import com.carsharingapp.model.Car;
 import com.carsharingapp.repository.SpecificationBuilder;
 import com.carsharingapp.repository.SpecificationProviderManager;
-import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -55,8 +54,6 @@ public class CarSpecificationBuilder implements SpecificationBuilder<Car> {
                                                 String[] values,
                                                 SearchCriteria searchCriteria) {
         if (values != null && values.length > 0) {
-            System.out.println("Adding specification for: " + searchCriteria.getValue()
-                    + " with values: " + Arrays.toString(values));
             Specification<Car> newSpec = carSpecificationProviderManager
                     .getSpecificationProvider(searchCriteria.getValue())
                     .getSpecification(values);
