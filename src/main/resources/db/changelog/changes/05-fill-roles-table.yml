@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: fill-roles-table-by-data
+      author: carsharingservice
+      changes:
+        - insert:
+            tableName: roles
+            columns:
+              - column: {name: "name", value: "MANAGER"}
+              - column: {name: "is_deleted", value: "0"}
+        - insert:
+            tableName: roles
+            columns:
+              - column: {name: "name", value: "CUSTOMER"}
+              - column: {name: "is_deleted", value: "0"}
