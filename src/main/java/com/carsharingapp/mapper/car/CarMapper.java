@@ -1,4 +1,4 @@
-package com.carsharingapp.mapper;
+package com.carsharingapp.mapper.car;
 
 import com.carsharingapp.config.MapperConfig;
 import com.carsharingapp.dto.car.CarResponseDto;

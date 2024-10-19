@@ -11,6 +11,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +31,7 @@ public class CarController {
 
     @GetMapping
     @Operation(summary = "Find all cars",
-            description = "Find all cars, uses pagination and sorting")
+            description = "Find all cars, uses pagination, and sorting")
     public List<CarResponseDto> getAllCars(Pageable pageable) {
         return carService.findAllCars(pageable);
     }
@@ -50,6 +51,7 @@ public class CarController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('MANAGER')")
     @Operation(summary = "Saves a list of cars in the database",
             description = "Accepts a list of car data transfer objects (DTOs) "
                     + "and saves each car to the database. Returns a list of saved car response "
@@ -59,15 +61,17 @@ public class CarController {
     }
 
     @PostMapping("/save-multiple")
+    @PreAuthorize("hasRole('MANAGER')")
     @Operation(summary = "Saves list of cars in DB")
     public List<CarResponseDto> saveCars(@RequestBody @Valid List<RequestCarDto> cars) {
         return carService.saveAll(cars);
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update car",
-            description = "Update car and return response DTO of updated car "
-                   + "Checks if a field you entered is valid")
+    @PreAuthorize("hasRole('MANAGER')")
+    @Operation(description = "update car",
+            summary = "Update car and return response DTO of updated car "
+                    + "Checks if a field you entered is valid")
     public CarResponseDto updateCar(@PathVariable Long id, @Valid RequestCarDto requestCarDto) {
         return carService.update(id, requestCarDto);
     }

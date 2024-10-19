@@ -1,46 +1,42 @@
 databaseChangeLog:
   - changeSet:
-      id: create-cars-table
+      id: create-users-table
       author: carsharingservice
       changes:
         - createTable:
-            tableName: cars
+            tableName: users
             columns:
               - column:
                   name: id
-                  type: bigint
+                  type: BIGINT
                   autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: model
-                  type: varchar(255)
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
-                  name: brand
-                  type: varchar(255)
+                  name: first_name
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
-                  name: body_type
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: inventory
-                  type: integer
-                  defaultValueNumeric: 0
-              - column:
-                  name: daily_fee
-                  type: decimal(38,2)
-                  defaultValue: '0.0'
+                  name: last_name
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
                   name: is_deleted
-                  type: boolean
+                  type: BOOLEAN
                   constraints:
                     defaultValue: false
                     nullable: false
