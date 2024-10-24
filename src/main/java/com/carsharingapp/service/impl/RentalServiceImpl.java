@@ -11,6 +11,7 @@ import com.carsharingapp.model.Rental;
 import com.carsharingapp.repository.car.CarRepository;
 import com.carsharingapp.repository.rental.RentalRepository;
 import com.carsharingapp.repository.user.UserRepository;
+import com.carsharingapp.service.NotificationService;
 import com.carsharingapp.service.RentalService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,6 +30,7 @@ public class RentalServiceImpl implements RentalService {
     private final CarRepository carRepository;
     private final UserRepository userRepository;
     private final RentalMapper rentalMapper;
+    private final NotificationService notificationService;
 
     @Override
     @Transactional
@@ -43,6 +45,7 @@ public class RentalServiceImpl implements RentalService {
                 .toModelWithCarAndUser(requestDto, car, userRepository.getReferenceById(userId));
         logger.info("Rental created successfully for userId: {} with carId: {}",
                 userId, requestDto.carId());
+        notificationService.notifyUserAboutCreatedRental(rental);
 
         return rentalMapper.toDto(rentalRepository.save(rental));
     }
@@ -76,12 +79,14 @@ public class RentalServiceImpl implements RentalService {
         rental.setActualReturnDate(LocalDateTime.now());
         if (rental.getActualReturnDate().isAfter(rental.getReturnDateTime())) {
             handleLateReturn(rental);
+            notificationService.notifyUserAboutOverdueRental(rental);
         }
         Car car = rental.getCar();
         updateCarInventory(rental.getCar(), 1);
         rentalRepository.save(rental);
         carRepository.save(car);
         logger.info("Rental returned successfully for rentalId: {}", rentalId);
+        notificationService.notifyUserAboutNoOverdueRentals();
         return rentalMapper.toDto(rental);
     }
 

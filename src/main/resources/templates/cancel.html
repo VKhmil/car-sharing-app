@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="https://kit.fontawesome.com/058dd5b88f.css" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/058dd5b88f.js" crossorigin="anonymous" defer></script>
+    <title>Payment Failed</title>
+    <style>
+        :root {
+            --redColor: #cb0d13; /* Червоний колір */
+            --grayColor: #f0f0f0;
+            --darkGray: #333;
+            --neutralColor: #cccccc; /* Нейтральний колір для кнопок */
+            --lightBlueColor: #add8e6; /* Світло-блакитний колір для кнопок при наведенні */
+        }
+
+        * {
+            font-family: Montserrat, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--grayColor);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .main-message {
+            position: relative;
+            max-width: 600px;
+            background-color: #fff;
+            text-align: center;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            margin: 20px;
+        }
+
+        i {
+            font-size: 80px;
+            color: var(--redColor);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: var(--redColor); /* Червоний колір для заголовка */
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            color: var(--darkGray); /* Сірий колір для підзаголовка */
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 18px;
+            color: var(--darkGray);
+            line-height: 1.5;
+        }
+
+        .actions {
+            margin-top: 20px;
+        }
+
+        .actions a {
+            display: inline-block;
+            background-color: var(--neutralColor); /* Нейтральний фон для кнопок */
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 5px;
+            transition: background-color 0.3s; /* Додаємо анімацію при переході */
+        }
+
+        .actions a:hover {
+            background-color: var(--lightBlueColor); /* Світло-блакитний колір при наведенні */
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-message">
+    <i class="fa-solid fa-circle-xmark"></i>
+    <h1>Something went wrong...</h1>
+    <p>
+        The payment has been cancelled or failed. Please try again or use a different payment method.
+    </p>
+    <h3>Need Help?</h3>
+    <p>If you continue to experience issues, please contact our support team for assistance.</p>
+    <div class="actions">
+        <a href="/retry-payment">Retry Payment</a>
+        <a href="/contact-support">Contact Support</a>
+    </div>
+</div>
+
+</body>
+</html>
