@@ -11,8 +11,8 @@ import com.carsharingapp.repository.spec.CarSpecificationBuilder;
 import com.carsharingapp.service.CarService;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -36,9 +36,8 @@ public class CarServiceImp implements CarService {
 
     @Override
     public List<CarResponseDto> findAllCars(Pageable pageable) {
-        return carRepository.findAll(pageable).stream()
-                .map(carMapper::toDto)
-                .collect(Collectors.toList());
+        Page<Car> carPage = carRepository.findAll(pageable);
+        return carMapper.toDtoList(carPage.getContent());
     }
 
     @Override
