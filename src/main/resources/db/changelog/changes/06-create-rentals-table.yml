@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-rentals-table
+      author: carsharingservice
+      changes:
+        - createTable:
+            tableName: rentals
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: rental_date_time
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: return_date
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: actual_return_date
+                  type: datetime
+              - column:
+                  name: car_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: car_id
+                    referencedTableName: cars
+                    referencedColumnNames: id
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: user_id
+                    referencedTableName: users
+                    referencedColumnNames: id
+                    nullable: false
+              - column:
+                  name: is_deleted
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
