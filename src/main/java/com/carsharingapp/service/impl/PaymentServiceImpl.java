@@ -28,14 +28,12 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@PropertySource("classpath:.env")
 public class PaymentServiceImpl implements PaymentService {
     private static final String DOMAIN = "http://localhost:8080";
     private static final double FINE_MULTIPLIER = 1.5;
