@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: create-rentals-table
+      id: create-payments-table
       author: carsharingservice
       changes:
         - createTable:
-            tableName: rentals
+            tableName: payments
             columns:
               - column:
                   name: id
@@ -14,33 +14,37 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: rental_date_time
-                  type: datetime
-                  constraints:
-                    nullable: false
-              - column:
-                  name: return_date
-                  type: datetime
-                  constraints:
-                    nullable: false
-              - column:
-                  name: actual_return_date
-                  type: datetime
-              - column:
-                  name: car_id
+                  name: rental_id
                   type: bigint
                   constraints:
-                    foreignKeyName: car_id
-                    referencedTableName: cars
+                    foreignKeyName: rental.id
+                    referencedTableName: rentals
                     referencedColumnNames: id
                     nullable: false
               - column:
-                  name: user_id
-                  type: bigint
+                  name: session_url
+                  type: varchar(500)
                   constraints:
-                    foreignKeyName: user_id
-                    referencedTableName: users
-                    referencedColumnNames: id
+                    nullable: false
+              - column:
+                  name: session_id
+                  type: varchar(500)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: decimal(10,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(20)
+                  constraints:
                     nullable: false
               - column:
                   name: is_deleted

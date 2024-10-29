@@ -26,9 +26,11 @@ public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "name", nullable = false, unique = true)
     private RoleName name;
+
     @Column(name = "is_deleted", unique = true)
     private boolean isDeleted;
 

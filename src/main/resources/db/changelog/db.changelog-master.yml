@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/changelog/changes/05-fill-roles-table.yml
   - include:
       file: db/changelog/changes/06-create-rentals-table.yml
+  - include:
+      file: db/changelog/changes/07-create-payments-table.yml
