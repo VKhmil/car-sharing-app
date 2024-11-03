@@ -33,6 +33,7 @@
 		<liquibase.version>4.29.1</liquibase.version>
 		<jjwt.version>0.12.6</jjwt.version>
 		<slf4j-api.version>2.0.16</slf4j-api.version>
+		<hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
 		<logback-classic.version>1.5.11</logback-classic.version>
 	</properties>
 	<dependencies>
@@ -61,7 +62,7 @@
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
-			<scope>runtime</scope>
+			<version>8.0.33</version>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -129,11 +130,6 @@
 			<version>1.5.11</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.1.0</version>
-		</dependency>
-		<dependency>
 			<groupId>com.stripe</groupId>
 			<artifactId>stripe-java</artifactId>
 			<version>24.0.0</version>
@@ -152,6 +148,10 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.15.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-docker-compose</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
