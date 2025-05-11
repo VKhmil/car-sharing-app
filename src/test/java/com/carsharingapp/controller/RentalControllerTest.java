@@ -45,7 +45,9 @@ import org.springframework.web.context.WebApplicationContext;
                 "classpath:database/test/users/insert-into-users_roles.sql",
                 "classpath:database/test/rentals/insert-into-rentals.sql",
                 "classpath:database/test/payments/insert-into-payments.sql"
-        }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+        }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
+        @Sql(scripts = "classpath:database/test/clear-data/clear-data.sql",
+                executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 })
 public class RentalControllerTest {
 
