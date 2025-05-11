@@ -35,7 +35,7 @@ public class Car {
     private Integer inventory;
     @Column(nullable = false)
     private BigDecimal dailyFee;
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TINYINT(1)")
     private boolean isDeleted = false;
 
     public enum CarBodyType {

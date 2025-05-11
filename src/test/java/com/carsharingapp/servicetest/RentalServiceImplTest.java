@@ -2,8 +2,6 @@ package com.carsharingapp.servicetest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import org.junit.jupiter.api.extension.ExtendWith;
-import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -14,6 +12,7 @@ import com.carsharingapp.exception.RentalIsNotActiveException;
 import com.carsharingapp.mapper.rental.RentalMapper;
 import com.carsharingapp.model.Car;
 import com.carsharingapp.model.Rental;
+import com.carsharingapp.model.User;
 import com.carsharingapp.repository.car.CarRepository;
 import com.carsharingapp.repository.rental.RentalRepository;
 import com.carsharingapp.repository.user.UserRepository;
@@ -25,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -55,7 +55,6 @@ class RentalServiceImplTest {
         Pageable pageable = PageRequest.of(0, 10);
         List<Rental> rentals = List.of(createRental());
         List<RentalResponseDto> rentalDtos = List.of(createRentalResponseDto());
-
         when(rentalRepository.getAllByUserId(userId, pageable)).thenReturn(rentals);
         when(rentalMapper.toDtoList(rentals)).thenReturn(rentalDtos);
 
@@ -72,10 +71,13 @@ class RentalServiceImplTest {
         List<Rental> activeRentals = List.of(createRental());
         List<RentalResponseDto> activeRentalDtos = List.of(createRentalResponseDto());
 
-        when(rentalRepository.getAllByUserIdAndActualReturnDateTimeIsNull(userId, pageable)).thenReturn(activeRentals);
+        when(rentalRepository
+                .getAllByUserIdAndActualReturnDateIsNull(userId, pageable))
+                .thenReturn(activeRentals);
         when(rentalMapper.toDtoList(activeRentals)).thenReturn(activeRentalDtos);
 
-        List<RentalResponseDto> result = rentalService.getAllActiveRentals(userId, pageable);
+        List<RentalResponseDto> result = rentalService
+                .getAllActiveRentals(userId, pageable);
 
         assertEquals(activeRentalDtos, result);
     }
@@ -90,33 +92,36 @@ class RentalServiceImplTest {
         List<Rental> notActiveRentals = List.of(rental);
         List<RentalResponseDto> notActiveRentalDtos = List.of(createRentalResponseDto());
 
-        when(rentalRepository.getAllByUserIdAndActualReturnDateTimeIsNotNull(userId, pageable)).thenReturn(notActiveRentals);
+        when(rentalRepository
+                .getAllByUserIdAndActualReturnDateIsNotNull(userId, pageable))
+                .thenReturn(notActiveRentals);
         when(rentalMapper.toDtoList(notActiveRentals)).thenReturn(notActiveRentalDtos);
 
-        List<RentalResponseDto> result = rentalService.getAllNotActiveRentals(userId, pageable);
+        List<RentalResponseDto> result = rentalService
+                .getAllNotActiveRentals(userId, pageable);
 
         assertEquals(notActiveRentalDtos, result);
     }
 
-
-
     @Test
     @DisplayName("Create rental when car is available")
     void createRental_whenCarInventoryIsAvailable_shouldCreateRental() {
-        RentalRequestDto requestDto = createRentalRequestDto();
         Car car = createCar();
         Rental rental = createRental();
+        User user = createUser();
+        rental.setUser(user);
+        RentalRequestDto requestDto = createRentalRequestDto();
         RentalResponseDto responseDto = createRentalResponseDto();
 
-        when(carRepository.findById(requestDto.carId())).thenReturn(Optional.of(car));
-        when(userRepository.getReferenceById(anyLong())).thenReturn(rental.getUser());
-        when(rentalMapper.toModelWithCarAndUser(requestDto, car, rental.getUser())).thenReturn(rental);
-        when(rentalMapper.toDto(rental)).thenReturn(responseDto);
+        when(carRepository.findById(car.getId())).thenReturn(Optional.of(car));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(rentalMapper.toModelWithCarAndUser(requestDto, car, user)).thenReturn(rental);
         when(rentalRepository.save(rental)).thenReturn(rental);
+        when(rentalMapper.toDto(rental)).thenReturn(responseDto);
 
-        RentalResponseDto result = rentalService.createRental(requestDto, 1L);
+        RentalResponseDto actual = rentalService.createRental(requestDto, user.getId());
 
-        assertEquals(responseDto, result);
+        assertEquals(responseDto, actual);
         verify(notificationService).notifyUserAboutCreatedRental(rental);
     }
 
@@ -129,7 +134,9 @@ class RentalServiceImplTest {
 
         when(carRepository.findById(requestDto.carId())).thenReturn(Optional.of(car));
 
-        assertThrows(NoAvailableCarsException.class, () -> rentalService.createRental(requestDto, 1L));
+        assertThrows(NoAvailableCarsException.class, () -> rentalService
+                .createRental(requestDto,
+                        1L));
     }
 
     @Test
@@ -140,7 +147,9 @@ class RentalServiceImplTest {
 
         when(rentalRepository.findById(rental.getId())).thenReturn(Optional.of(rental));
 
-        assertThrows(RentalIsNotActiveException.class, () -> rentalService.setActualReturnDate(rental.getId()));
+        assertThrows(RentalIsNotActiveException.class,
+                () -> rentalService
+                        .setActualReturnDate(rental.getId()));
     }
 
     private Car createCar() {
@@ -162,6 +171,13 @@ class RentalServiceImplTest {
         rental.setRentalDateTime(LocalDateTime.now());
         rental.setReturnDateTime(LocalDateTime.now().plusDays(3));
         return rental;
+    }
+
+    private User createUser() {
+        User user = new User();
+        user.setId(1L);
+        user.setEmail("test@example.com");
+        return user;
     }
 
     private RentalRequestDto createRentalRequestDto() {

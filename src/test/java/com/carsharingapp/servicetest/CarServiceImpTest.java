@@ -264,7 +264,12 @@ public class CarServiceImpTest {
         );
     }
 
-    private Car createCarWithParams(Long id, String model, String brand, Car.CarBodyType carBodyType, Integer inventory, BigDecimal dailyFee) {
+    private Car createCarWithParams(Long id,
+                                    String model,
+                                    String brand,
+                                    Car.CarBodyType carBodyType,
+                                    Integer inventory,
+                                    BigDecimal dailyFee) {
         Car car = createTestCar();
         car.setId(id);
         car.setModel(model);

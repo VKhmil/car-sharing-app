@@ -8,6 +8,7 @@ import com.carsharingapp.exception.RentalIsNotActiveException;
 import com.carsharingapp.mapper.rental.RentalMapper;
 import com.carsharingapp.model.Car;
 import com.carsharingapp.model.Rental;
+import com.carsharingapp.model.User;
 import com.carsharingapp.repository.car.CarRepository;
 import com.carsharingapp.repository.rental.RentalRepository;
 import com.carsharingapp.repository.user.UserRepository;
@@ -41,8 +42,10 @@ public class RentalServiceImpl implements RentalService {
             throw new NoAvailableCarsException("There are no free cars left for rent!");
         }
         updateCarInventory(car, -1);
-        Rental rental = rentalMapper
-                .toModelWithCarAndUser(requestDto, car, userRepository.getReferenceById(userId));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Can't find user by id: " + userId));
+
+        Rental rental = rentalMapper.toModelWithCarAndUser(requestDto, car, user);
         logger.info("Rental created successfully for userId: {} with carId: {}",
                 userId, requestDto.carId());
         notificationService.notifyUserAboutCreatedRental(rental);
@@ -59,13 +62,13 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public List<RentalResponseDto> getAllActiveRentals(Long userId, Pageable pageable) {
         return rentalMapper.toDtoList(rentalRepository
-                .getAllByUserIdAndActualReturnDateTimeIsNull(userId, pageable));
+                .getAllByUserIdAndActualReturnDateIsNull(userId, pageable));
     }
 
     @Override
     public List<RentalResponseDto> getAllNotActiveRentals(Long userId, Pageable pageable) {
         return rentalMapper.toDtoList(rentalRepository
-                .getAllByUserIdAndActualReturnDateTimeIsNotNull(userId, pageable));
+                .getAllByUserIdAndActualReturnDateIsNotNull(userId, pageable));
     }
 
     @Override

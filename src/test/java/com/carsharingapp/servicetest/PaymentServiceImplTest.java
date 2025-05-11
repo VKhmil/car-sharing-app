@@ -1,6 +1,5 @@
 package com.carsharingapp.servicetest;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -48,8 +47,9 @@ class PaymentServiceImplTest {
 
     @Mock
     private NotificationService notificationService;
-    //TODO: // env var // use java for loading var prop // not spring
-    private String stripeTestApi = "sk_test_51QD6L4I1LufT4rQ0RNeVwOk1xXUG21iQRYLovWQiQOGnSWH4POMR39qA2vLC9KMEx9gmJlI0QxT74hCaLt4Riou000H8X5DICb";
+    private String stripeTestApi =
+            "sk_test_51QD6L4I1LufT4rQ0RNeVwOk1xXUG21iQRYLovWQiQO"
+            + "GnSWH4POMR39qA2vLC9KMEx9gmJlI0QxT74hCaLt4Riou000H8X5DICb";
 
     @BeforeEach
     void setUp() {
@@ -62,12 +62,17 @@ class PaymentServiceImplTest {
         Rental rental = createRental();
         Payment payment = createPayment();
 
-        when(paymentRepository.findAllByRentalId(request.rentalId())).thenReturn(List.of());
-        when(rentalRepository.findById(request.rentalId())).thenReturn(Optional.of(rental));
-        when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
-        when(paymentMapper.toDto(payment)).thenReturn(createPaymentResponseDto());
+        when(paymentRepository
+                .findAllByRentalId(request.rentalId())).thenReturn(List.of());
+        when(rentalRepository
+                .findById(request.rentalId())).thenReturn(Optional.of(rental));
+        when(paymentRepository
+                .save(any(Payment.class))).thenReturn(payment);
+        when(paymentMapper
+                .toDto(payment)).thenReturn(createPaymentResponseDto());
 
-        PaymentResponseDto response = paymentService.createPaymentSession(request);
+        PaymentResponseDto response = paymentService
+                .createPaymentSession(request);
 
         assertNotNull(response);
         verify(paymentRepository).save(any(Payment.class));
@@ -76,11 +81,13 @@ class PaymentServiceImplTest {
     @Test
     void shouldThrowEntityNotFoundExceptionWhenRentalDoesNotExist() {
         PaymentRequestDto request = createPaymentRequestDto();
-        when(paymentRepository.findAllByRentalId(request.rentalId())).thenReturn(List.of());
-        when(rentalRepository.findById(request.rentalId())).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class, () -> paymentService.createPaymentSession(request));
+        when(paymentRepository
+                .findAllByRentalId(request.rentalId())).thenReturn(List.of());
+        when(rentalRepository
+                .findById(request.rentalId())).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class,
+                () -> paymentService.createPaymentSession(request));
     }
-
 
     @Test
     void shouldThrowEntityNotFoundExceptionWhenPaymentAlreadyPaid() {
@@ -88,9 +95,11 @@ class PaymentServiceImplTest {
         Payment existingPayment = createPayment();
         existingPayment.setStatus(Payment.PaymentStatus.PAID);
 
-        when(paymentRepository.findAllByRentalId(request.rentalId())).thenReturn(List.of(existingPayment));
+        when(paymentRepository.findAllByRentalId(request.rentalId()))
+                .thenReturn(List.of(existingPayment));
 
-        assertThrows(EntityNotFoundException.class, () -> paymentService.createPaymentSession(request));
+        assertThrows(EntityNotFoundException.class,
+                () -> paymentService.createPaymentSession(request));
     }
 
     @Test
@@ -102,11 +111,15 @@ class PaymentServiceImplTest {
 
         PaymentResponseDto paymentResponseDto = createPaymentResponseDto();
 
-        when(paymentRepository.findBySessionId(sessionId)).thenReturn(Optional.of(payment));
-        when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
-        when(paymentMapper.toDto(payment)).thenReturn(paymentResponseDto);
+        when(paymentRepository
+                .findBySessionId(sessionId)).thenReturn(Optional.of(payment));
+        when(paymentRepository
+                .save(any(Payment.class))).thenReturn(payment);
+        when(paymentMapper
+                .toDto(payment)).thenReturn(paymentResponseDto);
 
-        PaymentResponseDto response = paymentService.getSuccessfulPayment(sessionId);
+        PaymentResponseDto response = paymentService
+                .getSuccessfulPayment(sessionId);
 
         assertNotNull(response);
         assertEquals(Payment.PaymentStatus.PAID, response.status());
@@ -119,9 +132,12 @@ class PaymentServiceImplTest {
         Payment payment = createPayment();
         payment.setSessionId(sessionId);
 
-        when(paymentRepository.findBySessionId(sessionId)).thenReturn(Optional.of(payment));
-        when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
-        when(paymentMapper.toDto(any(Payment.class))).thenReturn(createPaymentResponseDto());
+        when(paymentRepository
+                .findBySessionId(sessionId)).thenReturn(Optional.of(payment));
+        when(paymentRepository
+                .save(any(Payment.class))).thenReturn(payment);
+        when(paymentMapper
+                .toDto(any(Payment.class))).thenReturn(createPaymentResponseDto());
 
         PaymentResponseDto response = paymentService.getCancelledPayment(sessionId);
 
@@ -134,10 +150,13 @@ class PaymentServiceImplTest {
     void shouldThrowEntityNotFoundExceptionWhenRentalNotFound() {
         PaymentRequestDto request = createPaymentRequestDto();
 
-        when(paymentRepository.findAllByRentalId(request.rentalId())).thenReturn(List.of());
-        when(rentalRepository.findById(request.rentalId())).thenReturn(Optional.empty());
+        when(paymentRepository
+                .findAllByRentalId(request.rentalId())).thenReturn(List.of());
+        when(rentalRepository
+                .findById(request.rentalId())).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> paymentService.createPaymentSession(request));
+        assertThrows(EntityNotFoundException.class,
+                () -> paymentService.createPaymentSession(request));
     }
 
     @Test
@@ -146,10 +165,14 @@ class PaymentServiceImplTest {
         Rental rental = createRental();
         Payment payment = createPayment();
 
-        when(paymentRepository.findAllByRentalId(request.rentalId())).thenReturn(List.of());
-        when(rentalRepository.findById(request.rentalId())).thenReturn(Optional.of(rental));
-        when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
-        when(paymentMapper.toDto(payment)).thenReturn(createPaymentResponseDto());
+        when(paymentRepository.findAllByRentalId(request.rentalId()))
+                .thenReturn(List.of());
+        when(rentalRepository.findById(request.rentalId()))
+                .thenReturn(Optional.of(rental));
+        when(paymentRepository.save(any(Payment.class)))
+                .thenReturn(payment);
+        when(paymentMapper.toDto(payment))
+                .thenReturn(createPaymentResponseDto());
 
         PaymentResponseDto response = paymentService.createPaymentSession(request);
 
@@ -164,14 +187,17 @@ class PaymentServiceImplTest {
         Payment payment = createPayment();
         payment.setSessionId(sessionId);
 
-        when(paymentRepository.findBySessionId(sessionId)).thenReturn(Optional.of(payment));
-        when(paymentRepository.save(any(Payment.class))).thenReturn(payment);
+        when(paymentRepository.findBySessionId(sessionId))
+                .thenReturn(Optional.of(payment));
+        when(paymentRepository.save(any(Payment.class)))
+                .thenReturn(payment);
 
-        PaymentResponseDto response = paymentService.getSuccessfulPayment(sessionId);
+        PaymentResponseDto response = paymentService
+                .getSuccessfulPayment(sessionId);
 
-        verify(notificationService).notifyUserAboutSuccessfulPayment(payment, payment.getRental().getCar());
+        verify(notificationService).notifyUserAboutSuccessfulPayment(payment,
+                payment.getRental().getCar());
     }
-
 
     @Test
     void shouldNotifyUserAfterCanceledPayment() {
@@ -184,7 +210,9 @@ class PaymentServiceImplTest {
 
         PaymentResponseDto response = paymentService.getCancelledPayment(sessionId);
 
-        verify(notificationService).notifyUserAboutCanceledPayment(payment, payment.getRental().getCar());
+        verify(notificationService)
+                .notifyUserAboutCanceledPayment(payment,
+                        payment.getRental().getCar());
     }
 
     private Rental createRental() {

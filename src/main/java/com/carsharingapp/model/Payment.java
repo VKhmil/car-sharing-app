@@ -54,7 +54,7 @@ public class Payment {
     @JoinColumn(name = "rental_id", nullable = false)
     private Rental rental;
 
-    @Column(name = "is_deleted", nullable = false)
+    @Column(name = "is_deleted", nullable = false, columnDefinition = "TINYINT(1)")
     private boolean isDeleted = false;
 
     public enum PaymentStatus {

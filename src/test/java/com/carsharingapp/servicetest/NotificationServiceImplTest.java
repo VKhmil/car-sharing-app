@@ -13,6 +13,7 @@ import com.carsharingapp.service.telegram.CarSharingBot;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -36,7 +37,10 @@ class NotificationServiceImplTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         String expectedMessage = String.format(
-                "Hello, %s! 🙌\nYou have successfully rented the following car:\n🚗 Model: %s, Brand: %s, Type: %s\nYour rental starts on: ⌛ %s, and you should return the car by: ⏳ %s. Remember, a fine may apply if you don't return on time! 💸",
+                "Hello, %s! 🙌\nYou have successfully rented the following car:\n🚗 "
+                        + "Model: %s, Brand: %s, Type: %s\nYour rental starts on: ⌛ %s, "
+                        + "and you should return the car by: ⏳ %s. "
+                        + "Remember, a fine may apply if you don't return on time! 💸",
                 rental.getUser().getFirstName(),
                 rental.getCar().getModel(),
                 rental.getCar().getBrand(),
@@ -49,7 +53,6 @@ class NotificationServiceImplTest {
         verify(carSharingBot, times(1)).sendMessage(messageCaptor.capture());
 
         String actualMessage = messageCaptor.getValue();
-
 
         assertThat(actualMessage).isEqualToIgnoringWhitespace(expectedMessage);
     }
@@ -64,7 +67,9 @@ class NotificationServiceImplTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         String expectedMessage = String.format(
-                "🚨 Reminder: You should have returned the car: 🚗 Model: %s, Brand: %s, Type: %s (Expected Return: 🕛 %s), but you returned it on 🕑 %s.",
+                "🚨 Reminder: You should have returned the car: 🚗 "
+                        + "Model: %s, Brand: %s, Type: %s (Expected Return: 🕛 %s), "
+                        + "but you returned it on 🕑 %s.",
                 rental.getCar().getModel(),
                 rental.getCar().getBrand(),
                 rental.getCar().getCarBodyType(),
@@ -75,7 +80,6 @@ class NotificationServiceImplTest {
         verify(carSharingBot, times(1)).sendMessage(expectedMessage);
     }
 
-
     @Test
     void shouldNotifyUserAboutSuccessfulPayment() {
         Payment payment = createTestPayment();
@@ -84,7 +88,9 @@ class NotificationServiceImplTest {
         notificationService.notifyUserAboutSuccessfulPayment(payment, car);
 
         String expectedMessage = String.format(
-                "✅ Payment Successful! You have successfully paid for the rental of: 🚗 Model: %s, Brand: %s, Type: %s. Total amount: $%.1f.",
+                Locale.US,
+                "✅ Payment Successful! You have successfully paid for the rental of: "
+                        + "🚗 Model: %s, Brand: %s, Type: %s. Total amount: $%.1f.",
                 car.getModel(),
                 car.getBrand(),
                 car.getCarBodyType(),
@@ -102,9 +108,11 @@ class NotificationServiceImplTest {
         notificationService.notifyUserAboutCanceledPayment(payment, car);
 
         String expectedMessage = String.format(
+                Locale.US,
                 "❌ Payment Failed! Unfortunately, "
-                        + "your payment for the rental of: 🚗 Model: %s, "
-                        + "Brand: %s, Type: %s has failed. Please try again. Amount: $%.1f.",
+                        + "your payment for the rental of: 🚗 "
+                        + "Model: %s, Brand: %s, Type: %s has failed. "
+                        + "Please try again. Amount: $%.1f.",
                 car.getModel(),
                 car.getBrand(),
                 car.getCarBodyType(),
@@ -114,12 +122,12 @@ class NotificationServiceImplTest {
         verify(carSharingBot, times(1)).sendMessage(expectedMessage);
     }
 
-
     @Test
     void shouldNotifyUserAboutNoOverdueRentals() {
         notificationService.notifyUserAboutNoOverdueRentals();
 
-        verify(carSharingBot, times(1)).sendMessage("🌞 Great news! You have no overdue rentals today!");
+        verify(carSharingBot, times(1)).sendMessage("🌞 "
+                + "Great news! You have no overdue rentals today!");
     }
 
     private Car createTestCar() {
@@ -133,7 +141,7 @@ class NotificationServiceImplTest {
     }
 
     private Rental createTestRental(Car car) {
-        Rental rental = new Rental();
+        final Rental rental = new Rental();
         User user = new User();
         user.setEmail("john.doe@mail.com");
         user.setFirstName("John");
