@@ -35,10 +35,12 @@ import org.springframework.web.context.WebApplicationContext;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @SqlGroup({
         @Sql(scripts = {
-                "classpath:database/test/clear-data/clear-data.sql"
-        }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
-
-        @Sql(scripts = {
+                "classpath:database/test/payments/delete-payments.sql",
+                "classpath:database/test/rentals/delete-rentals.sql",
+                "classpath:database/test/users/delete-users_roles.sql",
+                "classpath:database/test/users/delete-users.sql",
+                "classpath:database/test/roles/delete-roles.sql",
+                "classpath:database/test/cars/delete-cars.sql",
                 "classpath:database/test/cars/insert-list-of-cars.sql",
                 "classpath:database/test/roles/insert-into-roles.sql",
                 "classpath:database/test/users/insert-into-users.sql",
@@ -46,8 +48,6 @@ import org.springframework.web.context.WebApplicationContext;
                 "classpath:database/test/rentals/insert-into-rentals.sql",
                 "classpath:database/test/payments/insert-into-payments.sql"
         }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
-        @Sql(scripts = "classpath:database/test/clear-data/clear-data.sql",
-                executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 })
 public class RentalControllerTest {
 
