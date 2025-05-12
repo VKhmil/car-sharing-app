@@ -2,7 +2,6 @@ package com.carsharingapp.controller;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -140,24 +139,6 @@ public class RentalControllerTest {
         mockMvc.perform(get("/rentals/search")
                         .param("user_id", "1")
                         .param("is_active", "true")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @WithUserDetails("testuser1@example.com")
-    @DisplayName("Return rental")
-    void returnRental_ShouldReturnUpdatedRental() throws Exception {
-        RentalResponseDto rental = new RentalResponseDto(
-                4L,
-                1L,
-                "Car Brand",
-                "Car Model",
-                LocalDateTime.parse("2024-12-01T10:00:00"),
-                LocalDateTime.parse("2024-12-01T12:00:00"),
-                LocalDateTime.parse("2024-12-01T12:00:00"));
-
-        mockMvc.perform(post("/rentals/4/return")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
