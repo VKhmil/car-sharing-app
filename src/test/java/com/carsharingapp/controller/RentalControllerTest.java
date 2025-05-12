@@ -37,7 +37,6 @@ import org.springframework.web.context.WebApplicationContext;
         @Sql(scripts = {
                 "classpath:database/test/clear-data/clear-data.sql"
         }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
-
         @Sql(scripts = {
                 "classpath:database/test/cars/insert-list-of-cars.sql",
                 "classpath:database/test/roles/insert-into-roles.sql",
