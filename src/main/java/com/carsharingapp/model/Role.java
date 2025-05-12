@@ -31,7 +31,7 @@ public class Role implements GrantedAuthority {
     @Column(name = "name", nullable = false, unique = true)
     private RoleName name;
 
-    @Column(name = "is_deleted", unique = true)
+    @Column(name = "is_deleted", unique = true, columnDefinition = "TINYINT(1)")
     private boolean isDeleted;
 
     @Override

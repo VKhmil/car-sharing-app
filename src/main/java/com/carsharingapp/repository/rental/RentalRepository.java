@@ -14,10 +14,10 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     List<Rental> getAllByUserId(Long userId, Pageable pageable);
 
     @EntityGraph(attributePaths = "car")
-    List<Rental> getAllByUserIdAndActualReturnDateTimeIsNull(Long userId, Pageable pageable);
+    List<Rental> getAllByUserIdAndActualReturnDateIsNull(Long userId, Pageable pageable);
 
     @EntityGraph(attributePaths = "car")
-    List<Rental> getAllByUserIdAndActualReturnDateTimeIsNotNull(Long userId, Pageable pageable);
+    List<Rental> getAllByUserIdAndActualReturnDateIsNotNull(Long userId, Pageable pageable);
 
     @EntityGraph(attributePaths = "car")
     Optional<Rental> findRentalByIdAndUserId(Long rentalId, Long userId);

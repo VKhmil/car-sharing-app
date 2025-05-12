@@ -72,7 +72,8 @@ public class CarController {
     @Operation(description = "update car",
             summary = "Update car and return response DTO of updated car "
                     + "Checks if a field you entered is valid")
-    public CarResponseDto updateCar(@PathVariable Long id, @Valid RequestCarDto requestCarDto) {
+    public CarResponseDto updateCar(@PathVariable Long id,
+                                    @RequestBody @Valid RequestCarDto requestCarDto) {
         return carService.update(id, requestCarDto);
     }
 
